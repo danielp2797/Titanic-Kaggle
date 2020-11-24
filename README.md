@@ -1,4 +1,4 @@
-Titanic
+Titanic Competition
 ==============================
 
 Project Organization
