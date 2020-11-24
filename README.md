@@ -1,8 +1,6 @@
 Titanic
 ==============================
 
-In this projed a model to predict titanic survivors based on descriptive analysis [D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[D[Ca preliminar [[C[Cnaly[2~sis[Ds and someartificial features.
-
 Project Organization
 ------------
 
