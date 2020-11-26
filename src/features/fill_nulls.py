@@ -26,17 +26,21 @@ def fill_age_values(data):  # titanic train or test data
 def fill_fare_value(data):  # use with test data
 
     assert data['Fare'].isnull().sum()>0, 'no null value found'
-    mean_fare_of_class = data[data['Pclass'] == 3]['Fare'].mean
+    mean_fare_of_class = data[data['Pclass'] == 3]['Fare'].mean()
     null_index = data[data['Fare'].isnull()].index[0]
     data.loc[null_index, 'Fare'] = mean_fare_of_class
+
+    data['Fare'] = data['Fare'].astype(float)
 
     print('Fare value filled successfully')
 
 def fill_embarked(data):  # use with train and test if it neccesary
 
-    assert data['Embarked'].isnull().sum()>0, 'no null value found'  # if there is not null values do not use it
-    mode_embarked = data['Embarked'].mode()[0]
-    data.loc[data['Embarked'].isnull(), 'Embarked'] = mode_embarked
+    if data['Embarked'].isnull().sum()>0:
+        mode_embarked = data['Embarked'].mode()[0]
+        data.loc[data['Embarked'].isnull(), 'Embarked'] = mode_embarked
+    else:
+        print('No null values found')
 
     print('Embarked value filled successfully ')
 
