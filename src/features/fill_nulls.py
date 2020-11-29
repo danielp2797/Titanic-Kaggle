@@ -47,3 +47,4 @@ def fill_embarked(data):  # use with train and test if it neccesary
 
 
 
+

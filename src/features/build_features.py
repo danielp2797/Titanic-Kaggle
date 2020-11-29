@@ -19,15 +19,20 @@ def build_features(data):  # titanic train_data
     # class features
     C1 = pd.get_dummies(data['Pclass'])[1]
     C2 = pd.get_dummies(data['Pclass'])[2]
+    Pclass = data['Pclass']
 
     # numeric features
     scaler = StandardScaler()
 
     Age = data['Age'].copy()
     Age = pd.Series(scaler.fit_transform(np.array(Age).reshape(-1, 1))[:, 0])
+    # Age in bins
+    Age_bins = pd.cut(data['Age'], bins=10, labels=range(10))
 
     Fare = data['Fare'].copy()
     Fare = pd.Series(scaler.fit_transform(np.array(Fare).reshape(-1, 1))[:, 0])
+
+    Fare_bins = pd.cut(data['Fare'], bins=10, labels=range(10))
 
     # embarked features
     Isq = pd.get_dummies(data['Embarked'])['Q']
@@ -46,14 +51,24 @@ def build_features(data):  # titanic train_data
     else:
         y = None
 
+    Cabin = pd.get_dummies(data['Cabin'].fillna('Missing').apply(lambda x: x[:1]))
+
+    try: # except for test dataframe, T is not in test
+        Cabin['M'] = Cabin['M'] + Cabin['T']  # add T Cabin to M
+        Cabin.drop('T', axis=1, inplace=True)  # remove Cabin T
+    except:
+        pass
 
     X = pd.concat([Isfemale, Isalone, C1,
                    C2, Age, Fare, Isq, Iss, IsMr, IsMrs,
-                   Isminor, Ismiss, Israre, SibSp, Parch], axis=1, ignore_index=True)
+                   Isminor, Ismiss, Israre, SibSp, Parch,
+                   Pclass, Age_bins, Fare_bins, Cabin], axis=1, ignore_index=True)
 
     feature_names = ['Isfemale', 'Isalone', 'C1',
                      'C2', 'Age', 'Fare', 'Isq', 'Iss', 'Ismr', 'Ismrs',
-                     'Isminor', 'Ismiss', 'Israre', 'SibSp', 'Parch']
+                     'Isminor', 'Ismiss', 'Israre', 'SibSp', 'Parch', 'Pclass',
+                     'Age_bins', 'Fare_bins', 'CabinA', 'CabinB',
+                     'CabinC', 'CabinD', 'CabinE', 'CabinF', 'CabinG', 'CabinM']
 
     X.columns = feature_names
 
